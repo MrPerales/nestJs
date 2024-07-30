@@ -1,4 +1,14 @@
-import { Controller, Query, Get, Param } from '@nestjs/common';
+import {
+  Controller,
+  Query,
+  Get,
+  Param,
+  Post,
+  Body,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
+import { Response } from 'express';
 
 @Controller('products')
 export class ProductsController {
@@ -25,5 +35,13 @@ export class ProductsController {
     @Query('brand') brand: string,
   ) {
     return `products limit => ${limit} offset => ${offset} brand => ${brand}`;
+  }
+
+  @Post()
+  create(@Body() payload: any, @Res() resp: Response) {
+    return resp.status(HttpStatus.OK).json({
+      msg: 'agregado ',
+      payload,
+    });
   }
 }
