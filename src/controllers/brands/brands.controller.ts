@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
   Post,
+  Put,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -25,6 +27,21 @@ export class BrandsController {
     return resp.status(HttpStatus.OK).json({
       msg: 'create',
       payload,
+    });
+  }
+  @Put(':id')
+  update(@Param('id') id: string, @Res() resp: Response) {
+    return resp.status(HttpStatus.OK).json({
+      id,
+      msg: 'updated',
+    });
+  }
+
+  @Delete('id')
+  delete(@Param('id') id: string, @Res() resp: Response) {
+    return resp.status(HttpStatus.OK).json({
+      id,
+      msg: 'deleted',
     });
   }
 }
