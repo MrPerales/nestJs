@@ -8,6 +8,7 @@ import {
   Post,
   Put,
   Res,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -30,7 +31,7 @@ export class CategoriesController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Res() resp: Response) {
+  update(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
     return resp.status(HttpStatus.OK).json({
       id,
       msg: 'updated',
@@ -38,7 +39,7 @@ export class CategoriesController {
   }
 
   @Delete('id')
-  delete(@Param('id') id: string, @Res() resp: Response) {
+  delete(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
     return resp.status(HttpStatus.OK).json({
       id,
       msg: 'deleted',

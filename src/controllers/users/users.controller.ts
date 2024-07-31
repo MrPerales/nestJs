@@ -8,6 +8,7 @@ import {
   Body,
   Delete,
   Put,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 
@@ -23,7 +24,7 @@ export class UsersController {
   }
 
   @Get(':id')
-  getUser(@Param('id') id: string, @Res() resp: Response) {
+  getUser(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
     return resp.status(HttpStatus.OK).json({
       msg: `User id:${id}`,
     });
@@ -36,7 +37,7 @@ export class UsersController {
     });
   }
   @Put(':id')
-  update(@Param('id') id: string, @Res() resp: Response) {
+  update(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
     return resp.status(HttpStatus.OK).json({
       id,
       msg: 'updated',
@@ -44,7 +45,7 @@ export class UsersController {
   }
 
   @Delete('id')
-  delete(@Param('id') id: string, @Res() resp: Response) {
+  delete(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
     return resp.status(HttpStatus.OK).json({
       id,
       msg: 'deleted',

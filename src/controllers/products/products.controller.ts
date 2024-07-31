@@ -7,6 +7,7 @@ import {
   Body,
   Put,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ProductsService } from 'src/services/products/products.service';
 
@@ -24,8 +25,8 @@ export class ProductsController {
   // agregamos @params en los
   // parametros de la funcion para obtenerlos
   // como sabemos el nombre del parametro lo agregamos directamente
-  getProduct(@Param('id') id: string) {
-    return this.productService.findOne(+id);
+  getProduct(@Param('id', ParseIntPipe) id: number) {
+    return this.productService.findOne(id);
   }
 
   // query params
@@ -44,12 +45,12 @@ export class ProductsController {
     return this.productService.create(payload);
   }
   @Put(':id')
-  update(@Param('id') id: string, @Body() payload: any) {
-    return this.productService.update(+id, payload);
+  update(@Param('id', ParseIntPipe) id: number, @Body() payload: any) {
+    return this.productService.update(id, payload);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.productService.delete(+id);
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.productService.delete(id);
   }
 }
