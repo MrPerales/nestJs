@@ -30,4 +30,25 @@ export class ProductsService {
     this.products.push(newProduct);
     return newProduct;
   }
+
+  update(id: Product['id'], payload: any) {
+    const product = this.findOne(id);
+    if (product) {
+      const index = this.products.findIndex((item) => item.id === id);
+      this.products[index] = {
+        ...product,
+        ...payload,
+        id,
+      };
+      return this.products[index];
+    }
+    return null;
+  }
+
+  delete(id: Product['id']) {
+    const index = this.products.findIndex((item) => item.id === id);
+    this.products.splice(index, 1);
+
+    return { message: 'deleted' };
+  }
 }

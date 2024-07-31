@@ -5,15 +5,15 @@ import {
   Param,
   Post,
   Body,
-  Res,
-  HttpStatus,
   Put,
   Delete,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { ProductsService } from 'src/services/products/products.service';
 
 @Controller('products')
 export class ProductsController {
+  constructor(private productService: ProductsService) {}
+
   @Get('filter')
   getProductFilter() {
     return `soy un filter`;
@@ -25,7 +25,7 @@ export class ProductsController {
   // parametros de la funcion para obtenerlos
   // como sabemos el nombre del parametro lo agregamos directamente
   getProduct(@Param('id') id: string) {
-    return `product with id= ${id}`;
+    return this.productService.findOne(+id);
   }
 
   // query params
@@ -36,29 +36,20 @@ export class ProductsController {
     @Query('offset') offset = 0,
     @Query('brand') brand: string,
   ) {
-    return `products limit => ${limit} offset => ${offset} brand => ${brand}`;
+    return this.productService.findAll();
   }
 
   @Post()
-  create(@Body() payload: any, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      msg: 'agregado ',
-      payload,
-    });
+  create(@Body() payload: any) {
+    return this.productService.create(payload);
   }
   @Put(':id')
-  update(@Param('id') id: string, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      id,
-      msg: 'updated',
-    });
+  update(@Param('id') id: string, @Body() payload: any) {
+    return this.productService.update(+id, payload);
   }
 
-  @Delete('id')
-  delete(@Param('id') id: string, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      id,
-      msg: 'deleted',
-    });
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.productService.delete(+id);
   }
 }
