@@ -22,7 +22,7 @@ export class BrandsService {
   findOne(id: Brand['id']) {
     const brand = this.brands.find((item) => item.id === id);
     if (!brand) {
-      throw new NotFoundException(`product #${id} not found `);
+      throw new NotFoundException(`brand #${id} not found `);
     }
     return brand;
   }
@@ -52,8 +52,9 @@ export class BrandsService {
   delete(id: Brand['id']) {
     const index = this.brands.findIndex((item) => item.id === id);
     if (index === -1) {
-      throw new NotFoundException(`product #${id} not found `);
+      throw new NotFoundException(`brand #${id} not found `);
     }
     this.brands.splice(index, 1);
+    return { message: 'deleted' };
   }
 }
