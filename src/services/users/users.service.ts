@@ -27,7 +27,7 @@ export class UsersService {
     return user;
   }
   create(payload: CreateUserDto) {
-    this.counterId + 1;
+    this.counterId += 1;
     const newUser = {
       id: this.counterId,
       ...payload,

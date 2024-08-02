@@ -2,53 +2,44 @@ import {
   Controller,
   Get,
   Param,
-  Res,
-  HttpStatus,
   Post,
   Body,
   Delete,
   Put,
   ParseIntPipe,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { CreateUserDto, UpdateUserdto } from 'src/dtos/users.dto';
+import { UsersService } from 'src/services/users/users.service';
 
 @Controller('users')
 export class UsersController {
-  @Get()
-  getUsers(@Res() res: Response) {
-    return res.status(HttpStatus.OK).json({
-      msg: 'list User',
-    });
+  constructor(private userService: UsersService) {}
 
-    // ('List users');
+  @Get()
+  getUsers() {
+    return this.userService.fndAll();
   }
 
   @Get(':id')
-  getUser(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      msg: `User id:${id}`,
-    });
-  }
-  @Post()
-  create(@Body() payload: any, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      msg: 'create',
-      payload,
-    });
-  }
-  @Put(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      id,
-      msg: 'updated',
-    });
+  getUser(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.findOne(id);
   }
 
-  @Delete('id')
-  delete(@Param('id', ParseIntPipe) id: number, @Res() resp: Response) {
-    return resp.status(HttpStatus.OK).json({
-      id,
-      msg: 'deleted',
-    });
+  @Post()
+  create(@Body() payload: CreateUserDto) {
+    return this.userService.create(payload);
+  }
+
+  @Put(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: UpdateUserdto,
+  ) {
+    return this.userService.update(id, payload);
+  }
+
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.delete(id);
   }
 }
