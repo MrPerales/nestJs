@@ -1,0 +1,20 @@
+import { Module, Global } from '@nestjs/common';
+
+const API_KEY = '123456789';
+const API_KEY_PROD = 'PROD123456';
+
+@Global()
+@Module({
+  providers: [
+    {
+      // otra forma de injectar servicios o valores
+      provide: 'API_KEY',
+      useValue: process.env.NODE_ENV === 'prod' ? API_KEY_PROD : API_KEY,
+    },
+  ],
+  // con esto se va a poder utilizar desde cualquier modulo
+  // y como es global no necesitamos importalo solo lo injectamos
+  // "@Inject('API_KEY')"
+  exports: ['API_KEY'],
+})
+export class DatabaseModule {}

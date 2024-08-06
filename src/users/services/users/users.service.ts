@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { ProductsService } from 'src/products/services/products/products.service';
 import { CreateUserDto, UpdateUserdto } from 'src/users/dtos/users.dto';
 import { Order } from 'src/users/entities/order.entity';
@@ -6,7 +6,11 @@ import { User } from 'src/users/entities/users.entity';
 
 @Injectable()
 export class UsersService {
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    // solo se va a poder usar gracias al modulo global
+    @Inject('API_KEY') private apikey: string,
+  ) {}
 
   private counterId = 1;
   private users: User[] = [
