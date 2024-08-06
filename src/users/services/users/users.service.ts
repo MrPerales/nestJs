@@ -1,4 +1,5 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { ProductsService } from 'src/products/services/products/products.service';
 import { CreateUserDto, UpdateUserdto } from 'src/users/dtos/users.dto';
 import { Order } from 'src/users/entities/order.entity';
@@ -9,7 +10,7 @@ export class UsersService {
   constructor(
     private productsService: ProductsService,
     // solo se va a poder usar gracias al modulo global
-    @Inject('API_KEY') private apikey: string,
+    private configService: ConfigService,
   ) {}
 
   private counterId = 1;
@@ -25,6 +26,10 @@ export class UsersService {
     },
   ];
   fndAll() {
+    const apikey = this.configService.get('API_KEY');
+    const dataname = this.configService.get('DATABASE_NAME');
+    console.log('apikey:', apikey);
+    console.log('DATABASENAME:', dataname);
     return this.users;
   }
   findOne(id: User['id']) {
