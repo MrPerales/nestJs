@@ -1,0 +1,22 @@
+version: '3.3'
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DB=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PORT=${DB_PORT}
+    ports:
+      - ${DB_PORT}:${DB_PORT}
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - PMA_HOST=mysql
+    ports:
+      - 8080:80
