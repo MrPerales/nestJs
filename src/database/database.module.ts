@@ -23,6 +23,7 @@ const API_KEY_PROD = 'PROD123456';
           password,
           database: databaseName,
           synchronize: true,
+          autoLoadEntities: true,
         };
       },
     }),

@@ -70,12 +70,12 @@ export class UsersService {
     return { message: 'deleted' };
   }
 
-  getOrdersByUser(id: User['id']): Order {
+  async getOrdersByUser(id: User['id']) {
     const user = this.findOne(id);
     return {
       date: new Date(),
       user,
-      products: this.productsService.findAll(),
+      products: await this.productsService.findAll(),
     };
   }
 }
