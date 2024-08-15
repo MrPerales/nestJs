@@ -16,43 +16,40 @@ export class ProductsService {
   findAll() {
     return this.productRepo.find();
   }
-  findOne(id: Product['id']) {
-    const product = this.productRepo.findOneBy({ id });
+  async findOne(id: Product['id']) {
+    const product = await this.productRepo.findOneBy({ id });
     if (!product) {
       throw new NotFoundException(`product #${id} not found `);
     }
     return product;
   }
-  // create(payload: CreateProductDto) {
-  //   this.counterId += 1;
-  //   const newProduct = {
-  //     id: this.counterId,
-  //     ...payload,
-  //   };
-  //   this.products.push(newProduct);
-  //   return newProduct;
-  // }
+  create(payload: CreateProductDto) {
+    // const newProduct = new Product();
+    // newProduct.image= payload.image
+    // newProduct.description= payload.description ....
+    // cambiamos por una sola linea
+    // .create crea una instancia pero no guarda en la DB
+    const newProduct = this.productRepo.create(payload);
+    // .save en DB
+    return this.productRepo.save(newProduct);
+  }
 
-  // update(id: Product['id'], payload: UpdateProductDto) {
-  //   const product = this.findOne(id);
-  //   if (product) {
-  //     const index = this.products.findIndex((item) => item.id === id);
-  //     this.products[index] = {
-  //       ...product,
-  //       ...payload,
-  //       id,
-  //     };
-  //     return this.products[index];
-  //   }
-  //   return null;
-  // }
+  async update(id: Product['id'], payload: UpdateProductDto) {
+    const product = await this.findOne(id);
+    if (product) {
+      // update product (producto , cambios )
+      this.productRepo.merge(product, payload);
+      return this.productRepo.save(product);
+    }
+    return null;
+  }
 
-  // delete(id: Product['id']) {
-  //   const index = this.products.findIndex((item) => item.id === id);
-  //   if (index === -1) {
-  //     throw new NotFoundException(`product #${id} not found `);
-  //   }
-  //   this.products.splice(index, 1);
-  //   return { message: 'deleted' };
-  // }
+  async delete(id: Product['id']) {
+    const product = await this.findOne(id);
+    if (product) {
+      this.productRepo.delete(id);
+      return { message: 'deleted', product };
+    }
+    return null;
+  }
 }

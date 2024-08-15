@@ -48,23 +48,23 @@ export class ProductsController {
     return this.productService.findAll();
   }
 
-  // @ApiOperation({ summary: 'Create a Product' })
-  // @Post()
-  // create(@Body() payload: CreateProductDto) {
-  //   return this.productService.create(payload);
-  // }
+  @ApiOperation({ summary: 'Create a Product' })
+  @Post()
+  create(@Body() payload: CreateProductDto) {
+    return this.productService.create(payload);
+  }
 
-  // @ApiOperation({ summary: 'Update a Product' })
-  // @Put(':id')
-  // update(
-  //   @Param('id', ParseIntPipe) id: number,
-  //   @Body() payload: UpdateProductDto,
-  // ) {
-  //   return this.productService.update(id, payload);
-  // }
-  // @ApiOperation({ summary: 'Delete a Product' })
-  // @Delete(':id')
-  // delete(@Param('id', ParseIntPipe) id: number) {
-  //   return this.productService.delete(id);
-  // }
+  @ApiOperation({ summary: 'Update a Product' })
+  @Put(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: UpdateProductDto,
+  ) {
+    return this.productService.update(id, payload);
+  }
+  @ApiOperation({ summary: 'Delete a Product' })
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.productService.delete(id);
+  }
 }
