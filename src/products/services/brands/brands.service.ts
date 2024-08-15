@@ -1,60 +1,45 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { CreateBrandDto, UpdateBrandDto } from 'src/products/dtos/brands.dto';
 import { Brand } from 'src/products/entities/brands.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BrandsService {
-  private counterId = 1;
-  private brands: Brand[] = [
-    {
-      id: 1,
-      name: 'Brand 1',
-      image: 'url',
-      description: 'description brand',
-    },
-  ];
-
+  constructor(@InjectRepository(Brand) private brandRepo: Repository<Brand>) {}
   // metodos
   findAll() {
-    return this.brands;
+    return this.brandRepo.find();
   }
 
-  findOne(id: Brand['id']) {
-    const brand = this.brands.find((item) => item.id === id);
+  async findOne(id: Brand['id']) {
+    const brand = await this.brandRepo.findOneBy({ id });
     if (!brand) {
       throw new NotFoundException(`brand #${id} not found `);
     }
     return brand;
   }
+
   create(payload: CreateBrandDto) {
-    this.counterId += 1;
-    const newBrand = {
-      id: this.counterId,
-      ...payload,
-    };
-    this.brands.push(newBrand);
-    return newBrand;
+    const newBrand = this.brandRepo.create(payload);
+    return this.brandRepo.save(newBrand);
   }
-  update(id: Brand['id'], payload: UpdateBrandDto) {
-    const brand = this.findOne(id);
+
+  async update(id: Brand['id'], payload: UpdateBrandDto) {
+    const brand = await this.findOne(id);
     if (brand) {
-      const index = this.brands.findIndex((item) => item.id === id);
-      this.brands[index] = {
-        ...brand,
-        ...payload,
-        id,
-      };
-      return this.brands[index];
+      this.brandRepo.merge(brand, payload);
+      return this.brandRepo.save(brand);
     }
     return null;
   }
 
-  delete(id: Brand['id']) {
-    const index = this.brands.findIndex((item) => item.id === id);
-    if (index === -1) {
-      throw new NotFoundException(`brand #${id} not found `);
+  async delete(id: Brand['id']) {
+    const brand = await this.findOne(id);
+    if (brand) {
+      this.brandRepo.delete(id);
+      return { message: 'deleted', brand };
     }
-    this.brands.splice(index, 1);
-    return { message: 'deleted' };
+    return null;
   }
 }
