@@ -19,4 +19,16 @@ export class Product {
 
   @Column({ type: 'varchar' })
   image?: string;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
 }
