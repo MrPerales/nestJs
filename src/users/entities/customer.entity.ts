@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class User {
+export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -10,18 +10,6 @@ export class User {
 
   @Column({ type: 'varchar', length: 255 })
   lastName: string;
-
-  @Column({ type: 'varchar', length: 255, unique: true })
-  nickname: string;
-
-  @Column({ type: 'varchar' })
-  password: string;
-
-  @Column({ type: 'varchar' })
-  image: string;
-
-  @Column({ type: 'varchar' })
-  mail: string;
 
   @Column({
     type: 'timestamp',
