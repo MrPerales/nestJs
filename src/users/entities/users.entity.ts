@@ -1,4 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+
+import { Customer } from './customer.entity';
 
 @Entity()
 export class User {
@@ -34,4 +42,15 @@ export class User {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  // relacion
+  @OneToOne(
+    () => Customer,
+    (customer) => customer.user, //referencia a la tabla
+    { nullable: true }, //nullable porque puede que un usuario no sea cliente
+  )
+  @JoinColumn() //crea la referencia para poder enlasar hacia el customer ,
+  //  la tabla user va a cargar con la relacion por el JoinColumn()
+  // nota: solo se le aplica a una de las dos tablas que van a tener la relacion
+  customer: Customer;
 }

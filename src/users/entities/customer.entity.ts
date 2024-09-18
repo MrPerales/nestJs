@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './users.entity';
 @Entity()
 export class Customer {
   @PrimaryGeneratedColumn()
@@ -22,4 +22,12 @@ export class Customer {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  //relacion bidireccionar
+  @OneToOne(
+    () => User,
+    (user) => user.customer, //referencia a la tabla
+    { nullable: true },
+  )
+  user: User;
 }
