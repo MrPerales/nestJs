@@ -5,12 +5,14 @@ import { ProductsService } from 'src/products/services/products/products.service
 import { CreateUserDto, UpdateUserdto } from 'src/users/dtos/users.dto';
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
+import { CustomerService } from '../customer/customer.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User) private userRepo: Repository<User>,
     private productsService: ProductsService,
+    private customerService: CustomerService,
     // solo se va a poder usar gracias al modulo global
     private configService: ConfigService,
   ) {}
@@ -21,7 +23,9 @@ export class UsersService {
     // const dataname = this.configService.get('DATABASE_NAME');
     // console.log('apikey:', apikey);
     // console.log('DATABASENAME:', dataname);
-    return this.userRepo.find();
+    return this.userRepo.find({
+      relations: ['customer'],
+    });
   }
   async findOne(id: User['id']) {
     const user = await this.userRepo.findOneBy({ id });
@@ -31,8 +35,12 @@ export class UsersService {
     return user;
   }
 
-  create(payload: CreateUserDto) {
+  async create(payload: CreateUserDto) {
     const newUser = this.userRepo.create(payload);
+    if (payload.customerId) {
+      const customer = await this.customerService.findOne(payload.customerId);
+      newUser.customer = customer;
+    }
     return this.userRepo.save(newUser);
   }
 
