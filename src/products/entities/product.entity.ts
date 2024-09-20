@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Brand } from './brands.entity';
 
 @Entity()
 export class Product {
@@ -31,4 +32,8 @@ export class Product {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateAt: Date;
+
+  // muchos products a una marca
+  @ManyToOne(() => Brand, (brand) => brand.products)
+  brand: Brand;
 }
