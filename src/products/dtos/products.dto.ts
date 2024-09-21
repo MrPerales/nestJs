@@ -28,6 +28,11 @@ export class CreateProductDto {
   @IsUrl()
   @IsNotEmpty()
   readonly image: string;
+
+  @IsPositive()
+  @IsNumber()
+  @IsNotEmpty()
+  readonly brandId: number;
 }
 // con partialType nos facilitamos de reescribir
 //  todas las validaciones pero van a ser opcionales
