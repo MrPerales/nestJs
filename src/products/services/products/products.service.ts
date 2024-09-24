@@ -1,25 +1,30 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import {
   CreateProductDto,
   UpdateProductDto,
 } from 'src/products/dtos/products.dto';
 import { Product } from 'src/products/entities/product.entity';
-import { BrandsService } from '../brands/brands.service';
+import { Category } from 'src/products/entities/categories.entity';
+import { Brand } from 'src/products/entities/brands.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product) private productRepo: Repository<Product>,
-    private brandService: BrandsService,
+    @InjectRepository(Brand) private brandRepo: Repository<Brand>,
+    @InjectRepository(Category) private categoryRepo: Repository<Category>,
   ) {}
 
   findAll() {
     return this.productRepo.find({ relations: ['brand'] });
   }
   async findOne(id: Product['id']) {
-    const product = await this.productRepo.findOneBy({ id });
+    const product = await this.productRepo.findOne({
+      relations: ['brand', 'categories'],
+      where: { id },
+    });
     if (!product) {
       throw new NotFoundException(`product #${id} not found `);
     }
@@ -32,9 +37,17 @@ export class ProductsService {
     // cambiamos por una sola linea
     // .create crea una instancia pero no guarda en la DB
     const newProduct = this.productRepo.create(payload);
+    // relacionando los ids de brand y category al producto
     if (payload.brandId) {
-      const brand = await this.brandService.findOne(payload.brandId);
+      const brand = await this.brandRepo.findOneBy({ id: payload.brandId });
       newProduct.brand = brand;
+    }
+    if (payload.categoriesIds) {
+      const categories = await this.categoryRepo.findBy({
+        // In para buscar un array en este caso de ids
+        id: In(payload.categoriesIds),
+      });
+      newProduct.categories = categories;
     }
     // .save en DB
     return this.productRepo.save(newProduct);
