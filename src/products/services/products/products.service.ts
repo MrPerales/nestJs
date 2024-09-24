@@ -63,6 +63,42 @@ export class ProductsService {
     return null;
   }
 
+  async addCategoryToProduct(
+    productId: Product['id'],
+    categoryId: Category['id'],
+  ) {
+    const product = await this.productRepo.findOne({
+      relations: ['categories'],
+      where: { id: productId },
+    });
+    // buscamos la category
+    const category = await this.categoryRepo.findOne({
+      where: { id: categoryId },
+    });
+    // agregamos la categoria al array
+    product.categories.push(category);
+    return this.productRepo.save(product);
+  }
+
+  async removeCategoryByProduct(
+    productId: Product['id'],
+    categoryId: Category['id'],
+  ) {
+    const product = await this.productRepo.findOne({
+      where: { id: productId },
+      relations: ['categories'],
+    });
+    console.log(product);
+
+    // quitamos una categoria del array con filter
+    const productFilter = product.categories.filter(
+      (category) => category.id !== categoryId,
+    );
+    // guardamos las categorieas ya modificadas
+    product.categories = productFilter;
+    return this.productRepo.save(product);
+  }
+
   async delete(id: Product['id']) {
     const product = await this.findOne(id);
     if (product) {
