@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { Product } from './product.entity';
 
 @Entity()
 export class Category {
@@ -13,4 +14,19 @@ export class Category {
 
   @Column({ type: 'varchar' })
   image: string;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createAt: Date;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateAt: Date;
+
+  @ManyToMany(() => Product, (product) => product.categories)
+  products: Product[];
 }
