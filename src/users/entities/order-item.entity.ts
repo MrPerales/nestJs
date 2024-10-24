@@ -25,5 +25,5 @@ export class OrderItem {
   product: Product;
 
   @ManyToOne(() => Order, (order) => order.items)
-  order: Order[];
+  order: Order;
 }
