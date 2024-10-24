@@ -7,10 +7,12 @@ import {
   Post,
   Put,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateCategoryDto,
+  FilterCategoriesDto,
   UpdateCategoryDto,
 } from 'src/products/dtos/categories.dto';
 import { Category } from 'src/products/entities/categories.entity';
@@ -31,8 +33,8 @@ export class CategoriesController {
 
   @ApiOperation({ summary: 'List of Categories' })
   @Get()
-  getCategories() {
-    return this.categoriesService.findAll();
+  getCategories(@Query() params: FilterCategoriesDto) {
+    return this.categoriesService.findAll(params);
   }
 
   @ApiOperation({ summary: 'Get a Category' })
