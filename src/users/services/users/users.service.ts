@@ -2,7 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductsService } from 'src/products/services/products/products.service';
-import { CreateUserDto, UpdateUserdto } from 'src/users/dtos/users.dto';
+import {
+  CreateUserDto,
+  FilterUsersDto,
+  UpdateUserdto,
+} from 'src/users/dtos/users.dto';
 import { User } from 'src/users/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CustomerService } from '../customer/customer.service';
@@ -17,14 +21,17 @@ export class UsersService {
     private configService: ConfigService,
   ) {}
 
-  fndAll() {
+  fndAll(params?: FilterUsersDto) {
     // examples
     // const apikey = this.configService.get('API_KEY');
     // const dataname = this.configService.get('DATABASE_NAME');
     // console.log('apikey:', apikey);
     // console.log('DATABASENAME:', dataname);
+    const { limit, offset } = params;
     return this.userRepo.find({
       relations: ['customer'],
+      take: limit,
+      skip: offset,
     });
   }
   async findOne(id: User['id']) {

@@ -7,9 +7,14 @@ import {
   Delete,
   Put,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateUserDto, UpdateUserdto } from 'src/users/dtos/users.dto';
+import {
+  CreateUserDto,
+  FilterUsersDto,
+  UpdateUserdto,
+} from 'src/users/dtos/users.dto';
 import { UsersService } from 'src/users/services/users/users.service';
 
 @ApiTags('Users')
@@ -19,8 +24,8 @@ export class UsersController {
 
   @ApiOperation({ summary: 'List of Users' })
   @Get()
-  getUsers() {
-    return this.userService.fndAll();
+  getUsers(@Query() params: FilterUsersDto) {
+    return this.userService.fndAll(params);
   }
 
   @ApiOperation({ summary: 'Get a User' })
