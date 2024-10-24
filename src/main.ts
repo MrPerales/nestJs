@@ -12,6 +12,10 @@ async function bootstrap() {
       whitelist: true,
       // manda una advertencia de atributos extra que no esten en el DTO
       forbidNonWhitelisted: true,
+      transformOptions: {
+        // queryParams transform cadena de caracteres que se represente como numero lo hace number
+        enableImplicitConversion: true,
+      },
     }),
   );
 
