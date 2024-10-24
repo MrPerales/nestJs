@@ -7,9 +7,14 @@ import {
   Post,
   Put,
   ParseIntPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { CreateBrandDto, UpdateBrandDto } from 'src/products/dtos/brands.dto';
+import {
+  CreateBrandDto,
+  FilterBrandsDto,
+  UpdateBrandDto,
+} from 'src/products/dtos/brands.dto';
 import { BrandsService } from 'src/products/services/brands/brands.service';
 
 @ApiTags('Brands')
@@ -19,8 +24,8 @@ export class BrandsController {
 
   @ApiOperation({ summary: 'List of Brands' })
   @Get()
-  getBrands() {
-    return this.brandService.findAll();
+  getBrands(@Query() params: FilterBrandsDto) {
+    return this.brandService.findAll(params);
   }
   @ApiOperation({ summary: 'Get a Brand' })
   @Get(':id')

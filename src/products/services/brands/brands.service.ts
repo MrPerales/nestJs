@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateBrandDto, UpdateBrandDto } from 'src/products/dtos/brands.dto';
+import {
+  CreateBrandDto,
+  FilterBrandsDto,
+  UpdateBrandDto,
+} from 'src/products/dtos/brands.dto';
 import { Brand } from 'src/products/entities/brands.entity';
 import { Repository } from 'typeorm';
 
@@ -8,8 +12,9 @@ import { Repository } from 'typeorm';
 export class BrandsService {
   constructor(@InjectRepository(Brand) private brandRepo: Repository<Brand>) {}
   // metodos
-  findAll() {
-    return this.brandRepo.find();
+  findAll(params?: FilterBrandsDto) {
+    const { limit, offset } = params;
+    return this.brandRepo.find({ take: limit, skip: offset });
   }
 
   async findOne(id: Brand['id']) {
