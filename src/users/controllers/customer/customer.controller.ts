@@ -7,10 +7,12 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateCustomerDto,
+  FilterCustomerDto,
   UpdateCustomerDto,
 } from 'src/users/dtos/customer.dto';
 import { CustomerService } from 'src/users/services/customer/customer.service';
@@ -22,8 +24,8 @@ export class CustomerController {
 
   @ApiOperation({ summary: 'List of Customers' })
   @Get()
-  getCustomers() {
-    return this.customerService.findAll();
+  getCustomers(@Query() params: FilterCustomerDto) {
+    return this.customerService.findAll(params);
   }
 
   @ApiOperation({ summary: 'Get a Customer' })
