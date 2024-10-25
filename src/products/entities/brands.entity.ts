@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Product } from './product.entity';
-@Entity()
+
+@Entity({ name: 'brands' })
 export class Brand {
   @PrimaryGeneratedColumn()
   id: number;
@@ -15,12 +16,14 @@ export class Brand {
   description: string;
 
   @Column({
+    name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
   @Column({
+    name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })

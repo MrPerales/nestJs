@@ -8,7 +8,7 @@ import {
 import { User } from './users.entity';
 import { Order } from './order.entity';
 
-@Entity()
+@Entity({ name: 'customers' })
 export class Customer {
   @PrimaryGeneratedColumn()
   id: number;
@@ -16,16 +16,18 @@ export class Customer {
   @Column({ type: 'varchar', length: 255, unique: true })
   name: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ name: 'last_name', type: 'varchar', length: 255 })
   lastName: string;
 
   @Column({
+    name: 'created_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
   createAt: Date;
 
   @Column({
+    name: 'updated_at',
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
   })
