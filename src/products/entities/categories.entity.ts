@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 import { Product } from './product.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'categories' })
 export class Category {
@@ -15,6 +16,7 @@ export class Category {
   @Column({ type: 'varchar' })
   image: string;
 
+  @Exclude()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -22,6 +24,7 @@ export class Category {
   })
   createAt: Date;
 
+  @Exclude()
   @Column({
     name: 'updated_at',
     type: 'timestamp',

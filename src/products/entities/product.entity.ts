@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Brand } from './brands.entity';
 import { Category } from './categories.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'products' }) //nombre de la tabla en sql
 export class Product {
@@ -30,6 +31,7 @@ export class Product {
   @Column({ type: 'varchar' })
   image?: string;
 
+  @Exclude()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -37,6 +39,7 @@ export class Product {
   })
   createAt: Date;
 
+  @Exclude()
   @Column({
     name: 'updated_at',
     type: 'timestamp',

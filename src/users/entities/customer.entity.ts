@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { User } from './users.entity';
 import { Order } from './order.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'customers' })
 export class Customer {
@@ -19,6 +20,7 @@ export class Customer {
   @Column({ name: 'last_name', type: 'varchar', length: 255 })
   lastName: string;
 
+  @Exclude()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -26,6 +28,7 @@ export class Customer {
   })
   createAt: Date;
 
+  @Exclude()
   @Column({
     name: 'updated_at',
     type: 'timestamp',

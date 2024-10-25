@@ -8,12 +8,14 @@ import {
 } from 'typeorm';
 import { Customer } from './customer.entity';
 import { OrderItem } from './order-item.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'orders' })
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Exclude()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -21,6 +23,7 @@ export class Order {
   })
   createAt: Date;
 
+  @Exclude()
   @Column({
     name: 'updated_at',
     type: 'timestamp',

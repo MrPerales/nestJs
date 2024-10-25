@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 
 import { Customer } from './customer.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'users' })
 export class User {
@@ -31,6 +32,7 @@ export class User {
   @Column({ type: 'varchar' })
   mail: string;
 
+  @Exclude()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -38,6 +40,7 @@ export class User {
   })
   createAt: Date;
 
+  @Exclude()
   @Column({
     name: 'updated_at',
     type: 'timestamp',

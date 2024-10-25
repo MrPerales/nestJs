@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Product } from './product.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity({ name: 'brands' })
 export class Brand {
@@ -15,6 +16,7 @@ export class Brand {
   @Column({ type: 'text' })
   description: string;
 
+  @Exclude()
   @Column({
     name: 'created_at',
     type: 'timestamp',
@@ -22,6 +24,7 @@ export class Brand {
   })
   createAt: Date;
 
+  @Exclude()
   @Column({
     name: 'updated_at',
     type: 'timestamp',
