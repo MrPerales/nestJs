@@ -63,7 +63,7 @@ export class OrderItemService {
   async delete(id: number) {
     const orderItem = await this.findOne(id);
     if (orderItem) {
-      this.orderRepo.delete(id);
+      this.orderItemRepo.delete(id);
       return { message: 'deleted', body: { orderItem } };
     }
     return null;
